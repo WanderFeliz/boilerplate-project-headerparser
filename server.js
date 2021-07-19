@@ -21,13 +21,19 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api/whoami", function (req, res) {
+  // console.log(res, "Result");
+  // console.log(req, "Request");
+  const regExp = /\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b/
+  const clientIp = req.socket.remoteAddress.match(regExp)?.[0];
+  const clientLang = req.headers['accept-language'];
+  const clientSo = req.headers['user-agent'];
+  res.json({ipaddress: clientIp, language: clientLang, software: clientSo});
 });
 
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
